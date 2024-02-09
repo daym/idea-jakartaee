@@ -66,7 +66,7 @@ class JsfSchemaProvider : XmlSchemaProvider() {
     }
 
     private fun generateXsd(taglibText: String, namespace: String): String {
-        val transform = javaClass.getResourceAsStream("/TaglibToXSD.xslt")!!.readAllBytes().toString(Charsets.UTF_8)
+        val transform = javaClass.getResourceAsStream("/TaglibToXSD.xslt")!!.readAllBytes().toString(Charsets.UTF_8).replace("\$tlibNamespace", "https://jakarta.ee/xml/ns/jakartaee")
         val transformer: Transformer =
             TransformerFactory.newInstance().newTransformer(StreamSource(StringReader(transform)))
         //val outFile: File = File(outDir, taglibFile.getName().replaceFirst("\\.taglib\\.xml", ".xsd"))
