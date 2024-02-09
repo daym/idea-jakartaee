@@ -40,7 +40,7 @@
                 <xsl:if test="not(tlib:body-content='empty')">
                     <xsl:attribute name="mixed">true</xsl:attribute>
                     <xs:choice minOccurs="0" maxOccurs="unbounded">
-                        <xs:any processContents="lax"/>
+                        <xs:any processContents="strict"/>
                     </xs:choice>
                 </xsl:if>
                 <xsl:apply-templates select="tlib:attribute"/>
