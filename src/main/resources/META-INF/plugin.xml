@@ -1,0 +1,40 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.friendly_machines.jakarta_ee</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Jakartaee</name>
+
+    <vendor email="support@friendly-machines.com" url="https://www.friendly-machines.com/">Friendly Machines</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+    Jakarta EE plugin; includes Java Server Faces (JSF)
+  ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="Jsf"
+                implementationClass="com.friendly_machines.jakarta_ee.JsfFileType"
+                fieldName="INSTANCE"
+                language="Jsf"
+                extensions="jsf;xhtml"/>
+        <lang.parserDefinition
+                language="Jsf"
+                implementationClass="com.friendly_machines.jakarta_ee.JsfParserDefinition"/>
+    <!--<dom.fileMetaData implementation="com.friendly_machines.jakarta_ee.JsfDomFileDescription" />-->
+        <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.JsfSchemaProvider"/>
+
+    </extensions>
+
+</idea-plugin>
