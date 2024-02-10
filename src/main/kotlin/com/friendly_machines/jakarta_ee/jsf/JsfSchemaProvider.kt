@@ -1,4 +1,4 @@
-package com.friendly_machines.jakarta_ee
+package com.friendly_machines.jakarta_ee.jsf
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.module.Module
@@ -16,7 +16,6 @@ import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.xml.XmlFile
-import com.intellij.testFramework.utils.vfs.getPsiFile
 import com.intellij.xml.XmlSchemaProvider
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
@@ -88,7 +87,7 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         // Note: This file is in-memory. If you want to save it to disk, use PsiDirectory.add().
         val xsd: XmlFile =
             factory.createFileFromText(
-                String.format("taglib-%s.xsd", FileUtil.sanitizeFileName(namespace)), // FIXME escape
+                String.format("taglib-%s.xsd", FileUtil.sanitizeFileName(namespace)),
                 XmlFileType.INSTANCE, // TODO FileTypes.XsdFile
                 xsdText,
                 taglib.modificationStamp,

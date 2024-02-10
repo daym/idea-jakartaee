@@ -25,15 +25,26 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileType
                 name="Jsf"
-                implementationClass="com.friendly_machines.jakarta_ee.JsfFileType"
+                implementationClass="com.friendly_machines.jakarta_ee.jsf.JsfFileType"
                 fieldName="INSTANCE"
                 language="Jsf"
                 extensions="jsf;xhtml"/>
         <lang.parserDefinition
                 language="Jsf"
-                implementationClass="com.friendly_machines.jakarta_ee.JsfParserDefinition"/>
+                implementationClass="com.friendly_machines.jakarta_ee.jsf.JsfParserDefinition"/>
     <!--<dom.fileMetaData implementation="com.friendly_machines.jakarta_ee.JsfDomFileDescription" />-->
-        <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.JsfSchemaProvider"/>
+        <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.jsf.JsfSchemaProvider"/>
+
+        <fileType
+                name="FacesConfig"
+                implementationClass="com.friendly_machines.jakarta_ee.faces_config.FacesConfigFileType"
+                fieldName="INSTANCE"
+                language="FacesConfig"
+                extensions="faces-config.xml"/>
+        <lang.parserDefinition
+                language="FacesConfig"
+                implementationClass="com.friendly_machines.jakarta_ee.faces_config.FacesConfigParserDefinition"/>
+        <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.jsf.JsfSchemaProvider"/>
 
     </extensions>
 

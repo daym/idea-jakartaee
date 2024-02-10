@@ -1,4 +1,4 @@
-package com.friendly_machines.jakarta_ee
+package com.friendly_machines.jakarta_ee.jsf
 
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.impl.source.xml.XmlFileImpl

@@ -1,6 +1,5 @@
-package com.friendly_machines.jakarta_ee
+package com.friendly_machines.jakarta_ee.jsf
 
-import com.intellij.lang.Language
 import com.intellij.lang.xhtml.XHTMLLanguage
 import com.intellij.lang.xml.XMLLanguage
 

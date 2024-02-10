@@ -1,23 +1,24 @@
-package com.friendly_machines.jakarta_ee
+package com.friendly_machines.jakarta_ee.faces_config
 
+import com.friendly_machines.jakarta_ee.JakartaeeIcons
 import com.intellij.ide.highlighter.HtmlFileType
 import javax.swing.Icon
 
 
-class JsfFileType : HtmlFileType(JsfLanguage.INSTANCE) {
+class FacesConfigFileType : HtmlFileType(FacesConfigLanguage.INSTANCE) {
     companion object {
-        val INSTANCE = JsfFileType()
+        val INSTANCE = FacesConfigFileType()
     }
     override fun getName(): String {
-        return "Jsf"
+        return "FacesConfig"
     }
 
     override fun getDescription(): String {
-        return "Java server faces"
+        return "Java server faces config"
     }
 
     override fun getDefaultExtension(): String {
-        return "jsf"
+        return "xml"
     }
 
     override fun getIcon(): Icon {
