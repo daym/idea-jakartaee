@@ -1,11 +1,11 @@
 package com.friendly_machines.jakarta_ee.faces_config
 
 import com.friendly_machines.jakarta_ee.JakartaeeIcons
-import com.intellij.ide.highlighter.HtmlFileType
+import com.intellij.ide.highlighter.XmlLikeFileType
 import javax.swing.Icon
 
 
-class FacesConfigFileType : HtmlFileType(FacesConfigLanguage.INSTANCE) {
+class FacesConfigFileType : XmlLikeFileType(FacesConfigLanguage.INSTANCE) {
     companion object {
         val INSTANCE = FacesConfigFileType()
     }
@@ -22,6 +22,6 @@ class FacesConfigFileType : HtmlFileType(FacesConfigLanguage.INSTANCE) {
     }
 
     override fun getIcon(): Icon {
-        return JakartaeeIcons.JSF_FILE
+        return JakartaeeIcons.FACES_CONFIG_FILE
     }
 }
