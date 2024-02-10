@@ -35,17 +35,6 @@
     <!--<dom.fileMetaData implementation="com.friendly_machines.jakarta_ee.JsfDomFileDescription" />-->
         <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.jsf.JsfSchemaProvider"/>
 
-        <fileType
-                name="FacesConfig"
-                implementationClass="com.friendly_machines.jakarta_ee.faces_config.FacesConfigFileType"
-                fieldName="INSTANCE"
-                language="FacesConfig"
-                extensions="faces-config.xml"/>
-        <lang.parserDefinition
-                language="FacesConfig"
-                implementationClass="com.friendly_machines.jakarta_ee.faces_config.FacesConfigParserDefinition"/>
-        <xml.schemaProvider implementation="com.friendly_machines.jakarta_ee.jsf.JsfSchemaProvider"/>
-
     </extensions>
 
 </idea-plugin>

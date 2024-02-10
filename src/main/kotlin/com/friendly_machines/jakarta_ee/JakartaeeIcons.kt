@@ -5,6 +5,7 @@ import javax.swing.Icon
 
 
 object JakartaeeIcons {
+    val EJB_JAR_FILE: Icon = getIcon("/icons/faces-config-file.svg", JakartaeeIcons::class.java)
     val FACES_CONFIG_FILE: Icon = getIcon("/icons/faces-config-file.svg", JakartaeeIcons::class.java)
     val JSF_FILE: Icon = getIcon("/icons/jsf-file.svg", JakartaeeIcons::class.java)
 
