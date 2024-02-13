@@ -17,8 +17,6 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.xml.XmlFile
 import com.intellij.xml.XmlSchemaProvider
-import com.jetbrains.rd.util.string.print
-import io.ktor.utils.io.*
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
 import java.io.StringReader
