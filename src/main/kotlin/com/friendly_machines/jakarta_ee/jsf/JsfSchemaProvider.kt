@@ -32,7 +32,7 @@ import javax.xml.transform.stream.StreamSource
 class JsfSchemaProvider : XmlSchemaProvider() {
     private val SCHEMAS_BUNDLE_KEY: Key<CachedValue<Map<String, XmlFile>>> = Key.create("jsf_schemas")
     override fun isAvailable(file: XmlFile): Boolean {
-        if ((file.name.endsWith(".xhtml") || file.name.endsWith(".jsf")) && file.rootTag?.namespace?.equals("http://www.w3.org/1999/xhtml") == true) {
+        if ((file.name.endsWith(".xhtml") || file.name.endsWith(".jsf")) && file.rootTag?.getAttributeValue("xmlns") == "http://www.w3.org/1999/xhtml") {
             // .composition|.decorate|.include: http://java.sun.com/jsf/facelets jakarta.faces.facelets
             // tr.: jakarta.faces.html
             // TODO file.document.getRootTagNSDescriptor().
