@@ -113,6 +113,8 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         for (taglibFile in taglibFiles) {
             try {
                 parseTaglib(module.project, taglibFile, schemas)
+            } catch (e: ProcessCanceledException) {
+                throw e // do not cache
             } catch (e: RuntimeException) {
                 e.printStackTrace()
             }
