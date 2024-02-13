@@ -50,7 +50,7 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         val root = builder.parse(source).documentElement
         if (root.tagName == "facelet-taglib") { // TODO check xmlns ?
             for (namespaceOfNamespace in arrayOf("https://jakarta.ee/xml/ns/jakartaee", "http://xmlns.jcp.org/xml/ns/javaee", "http://java.sun.com/xml/ns/javaee")) {
-                var namespaces = root.getElementsByTagNameNS(namespaceOfNamespace, "namespace")
+                val namespaces = root.getElementsByTagNameNS(namespaceOfNamespace, "namespace")
                 if (namespaces.length != 0) {
                     val namespace = namespaces.item(0) as Element
                     return TaglibNamespace(namespaceOfNamespace, namespace.textContent)
@@ -61,7 +61,6 @@ class JsfSchemaProvider : XmlSchemaProvider() {
     }
 
     private fun generateXsd(taglibText: String, taglibNamespace: TaglibNamespace): String {
-        var namespace = taglibNamespace.text
         val transform = javaClass.getResourceAsStream("/TaglibToXSD.xslt")!!.readAllBytes().toString(Charsets.UTF_8).replace("\$tlibNamespace", taglibNamespace.ns)
         val transformer: Transformer =
             TransformerFactory.newInstance().newTransformer(StreamSource(StringReader(transform)))
@@ -123,9 +122,9 @@ class JsfSchemaProvider : XmlSchemaProvider() {
     private fun getSchemas(module: Module): Map<String, XmlFile> {
         val project = module.project
         val manager = CachedValuesManager.getManager(project)
-        val bundle = manager.getCachedValue<Map<String, XmlFile>>(
+        val bundle = manager.getCachedValue(
             module, SCHEMAS_BUNDLE_KEY,
-            CachedValueProvider<Map<String, XmlFile>> {
+            CachedValueProvider {
                 try {
                     return@CachedValueProvider computeSchemas(module)
                 } catch (pce: ProcessCanceledException) {
@@ -148,7 +147,7 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         } catch (e: ProcessCanceledException) {
             //e.printStackTrace()
         } catch (e: Exception) {
-            e.printStackTrace();
+            e.printStackTrace()
         }
         return null
     }
