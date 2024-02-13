@@ -40,37 +40,34 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         return false
     }
 
+    data class TaglibNamespace(val ns: String, val text: String)
+
     /** Given a taglib, extract the value in the <namespace> element and return it */
-    private fun extractTaglibNamespace(taglibText: String): String? {
-        val factory = DocumentBuilderFactory.newInstance()
+    private fun extractTaglibNamespace(taglibText: String): TaglibNamespace? {
+        val factory = DocumentBuilderFactory.newNSInstance()
         val builder = factory.newDocumentBuilder()
         val source = InputSource(StringReader(taglibText))
         val root = builder.parse(source).documentElement
         if (root.tagName == "facelet-taglib") { // TODO check xmlns ?
-            var namespaces = root.getElementsByTagNameNS("https://jakarta.ee/xml/ns/jakartaee", "namespace")
-            if (namespaces.length == 0) {
-                namespaces = root.getElementsByTagNameNS("http://xmlns.jcp.org/xml/ns/javaee", "namespace") // XXX remove
+            for (namespaceOfNamespace in arrayOf("https://jakarta.ee/xml/ns/jakartaee", "http://xmlns.jcp.org/xml/ns/javaee", "http://java.sun.com/xml/ns/javaee")) {
+                var namespaces = root.getElementsByTagNameNS(namespaceOfNamespace, "namespace")
+                if (namespaces.length != 0) {
+                    val namespace = namespaces.item(0) as Element
+                    return TaglibNamespace(namespaceOfNamespace, namespace.textContent)
+                }
             }
-            if (namespaces.length == 0) {
-                namespaces = root.getElementsByTagName("namespace")
-            }
-            if (namespaces.length == 0) {
-                return null
-            }
-            val namespace = namespaces.item(0) as Element
-            return namespace.textContent
-        } else {
-            return null
         }
+        return null
     }
 
-    private fun generateXsd(taglibText: String, namespace: String): String {
-        val transform = javaClass.getResourceAsStream("/TaglibToXSD.xslt")!!.readAllBytes().toString(Charsets.UTF_8).replace("\$tlibNamespace", "https://jakarta.ee/xml/ns/jakartaee")
+    private fun generateXsd(taglibText: String, taglibNamespace: TaglibNamespace): String {
+        var namespace = taglibNamespace.text
+        val transform = javaClass.getResourceAsStream("/TaglibToXSD.xslt")!!.readAllBytes().toString(Charsets.UTF_8).replace("\$tlibNamespace", taglibNamespace.ns)
         val transformer: Transformer =
             TransformerFactory.newInstance().newTransformer(StreamSource(StringReader(transform)))
         //val outFile: File = File(outDir, taglibFile.getName().replaceFirst("\\.taglib\\.xml", ".xsd"))
         val result = StringWriter()
-        //transformer.setParameter("tlibNamespace", "https://jakarta.ee/xml/ns/jakartaee")
+        //transformer.setParameter("tlibNamespace", taglibNamespace.ns)
         transformer.transform(StreamSource(StringReader(taglibText)), StreamResult(result))
         return result.toString()
     }
@@ -81,13 +78,12 @@ class JsfSchemaProvider : XmlSchemaProvider() {
         destination: MutableMap<String, XmlFile>
     ) {
         val taglibText = String(taglib.contentsToByteArray())
-        val namespace = extractTaglibNamespace(taglibText) ?: return
-        val xsdText = generateXsd(taglibText, namespace)
-        val factory = PsiFileFactory.getInstance(project)
+        val taglibNamespace = extractTaglibNamespace(taglibText) ?: return
+        val xsdText = generateXsd(taglibText, taglibNamespace)
         // Note: This file is in-memory. If you want to save it to disk, use PsiDirectory.add().
         val xsd: XmlFile =
-            factory.createFileFromText(
-                String.format("taglib-%s.xsd", FileUtil.sanitizeFileName(namespace)),
+            PsiFileFactory.getInstance(project).createFileFromText(
+                String.format("taglib-%s.xsd", FileUtil.sanitizeFileName(taglibNamespace.text)),
                 XmlFileType.INSTANCE, // TODO FileTypes.XsdFile
                 xsdText,
                 taglib.modificationStamp,
@@ -99,12 +95,12 @@ class JsfSchemaProvider : XmlSchemaProvider() {
 //        taglib.getPsiFile(project).let {
 //            xsd.putUserData<PsiFile>(PsiFileFactory.ORIGINAL_FILE, it)
 //        }
-        destination[namespace] = xsd
+        destination[taglibNamespace.text] = xsd
     }
 
     private fun computeSchemas(module: Module): CachedValueProvider.Result<Map<String, XmlFile>> {
         val dependencies = ArrayList<Any>()
-        // TODO single out jsf implementation only
+        // TODO single out jsf implementation (for example mojarra) and extension libs (for example PrimeFaces) only
         dependencies.add(ProjectRootManager.getInstance(module.project))
         val schemas: MutableMap<String, XmlFile> = HashMap()
         val taglibFiles = FilenameIndex.getAllFilesByExt(
@@ -112,21 +108,6 @@ class JsfSchemaProvider : XmlSchemaProvider() {
             "taglib.xml",
             GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)
         )
-//        TODO
-//        composite.xsd
-//        facelets_jsf_core.xsd
-//        facelets_passthrough_attributes.xsd
-//        facelets_passthrough_elements.xsd
-//        html_basic.xsd
-//        jstl-core.xsd
-//        jstl-fn.xsd
-//        mojarra_ext.xsd
-//        ui.xsd
-//        val psiFiles = FilenameIndex.getFilesByName(
-//            module.project,
-//            "faces.html.taglib.xml",
-//            GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module)
-//        )
         for (taglibFile in taglibFiles) {
             parseTaglib(module.project, taglibFile, schemas)
         }
